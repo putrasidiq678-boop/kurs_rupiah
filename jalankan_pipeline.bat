@@ -4,13 +4,13 @@ echo === MEMULAI AUTOMATED PIPELINE JAM 5 SORE ===
 
 echo 1. Mengambil Data Pasar & BI Rate Live...
 call .venv\Scripts\activate
-python ambil_data.py
+python model/ambil_data.py
 
 echo 2. Memproses Analisis Sentimen Berita...
-python proses_berita.py
+python model/proses_berita.py
 
 echo 3. Melatih Ulang Model AI Prediksi...
-python latih_model.py
+python model/latih_model.py
 
 echo === PIPELINE SELESAI DIEKSEKUSI ===
 deactivate

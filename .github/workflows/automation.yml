@@ -26,14 +26,14 @@ jobs:
 
     - name: Eksekusi Pipeline 4 Pilar Berurutan
       run: |
-        python ambil_data.py
-        python proses_berita.py
-        python latih_model.py
+        python model/ambil_data.py
+        python model/proses_berita.py
+        python model/latih_model.py
 
     - name: Simpan dan Komit Hasil Data Terbaru ke Repositori
       run: |
         git config --global user.name 'Automated Bot'
         git config --global user.email 'bot@github.com'
-        git add data/model/
+        git add data/ model/
         git commit -m "Auto Update: Data Pasar & Model Terkini $(date)" || exit 0
         git push
