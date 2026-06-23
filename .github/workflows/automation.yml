@@ -1,0 +1,39 @@
+name: Automated Market Data & AI Pipeline
+
+on:
+  schedule:
+    # Menggunakan standar UTC. Jam 5 sore WIB adalah Jam 10:00 pagi UTC
+    - cron: '0 10 * * *'
+  workflow_dispatch: # Memperbolehkan Anda klik tombol "Run" manual dari web GitHub
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Batalkan Pengecekan Repositori
+      uses: actions/checkout@v3
+
+    - name: Mengatur Python Environment
+      uses: actions/setup-python@v4
+      with:
+        python-node: '3.10'
+
+    - name: Install Dependensi Proyek
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas numpy yfinance scikit-learn vaderSentiment requests lxml
+
+    - name: Eksekusi Pipeline 4 Pilar Berurutan
+      run: |
+        python ambil_data.py
+        python proses_berita.py
+        python latih_model.py
+
+    - name: Simpan dan Komit Hasil Data Terbaru ke Repositori
+      run: |
+        git config --global user.name 'Automated Bot'
+        git config --global user.email 'bot@github.com'
+        git add data/model/
+        git commit -m "Auto Update: Data Pasar & Model Terkini $(date)" || exit 0
+        git push
